@@ -75,9 +75,6 @@ describe "Sibling Tags" do
     end
     
     it "should skip unpublished pages when looking for previous" do
-      # conditions(virtual = ?) and (status_id = ?) and (title < ?)false100Sneezyordertitle ASC
-      
-      # F conditions(virtual = ?) and (status_id = ?) and (title > ?),false,100,Happy,order title ASC
       page(:sneezy).should render('<r:siblings:previous by="title"><r:title/></r:siblings:previous>').as('Happy')
       
       
@@ -86,7 +83,13 @@ describe "Sibling Tags" do
     
   end
   
-  describe "" do
+  describe "called from scope other than the current page" do
+  
+    it "should operate within the specified scope" do
+      # page(:home).should render('<r:find url="/mother-of-two"><r:children:first><r:title/></r:children:first></r:find>').as('Kate')
+      
+      page(:home).should render('<r:find url="/mother-of-two"><r:children:first><r:siblings:next><r:title/></r:siblings:next></r:children:first></r:find>').as('Amy')
+    end
   
   end
   

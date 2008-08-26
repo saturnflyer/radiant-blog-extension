@@ -11,7 +11,7 @@ class SiblingPagesScenario < Scenario::Base
       create_page "Kate",  :published_at => DateTime.parse('2002-10-01 04:02:10')
     end
     
-    create_page "Motherofmany" do
+    create_page "Mother of dwarves" do
       create_page "Bashful", :published_at => DateTime.parse('2005-10-07 12:12:12')
       create_page "Doc",     :published_at => DateTime.parse('2004-09-08 12:12:12')
       create_page "Dopey",   :published_at => DateTime.parse('2003-08-09 12:12:12')

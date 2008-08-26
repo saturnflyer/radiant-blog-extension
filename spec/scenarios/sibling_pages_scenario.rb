@@ -12,13 +12,13 @@ class SiblingPagesScenario < Scenario::Base
     end
     
     create_page "Motherofmany" do
-      create_page "Bashful", :published_at => DateTime.parse('2004-09-08 12:12:12')
-      create_page "Doc",     :published_at => DateTime.parse('2002-07-10 12:12:12')
-      create_page "Dopey",   :published_at => DateTime.parse('2000-05-12 12:12:12')
-      create_page "Grumpy",  :published_at => DateTime.parse('2001-06-11 12:12:12')
-      create_page "Happy",   :published_at => DateTime.parse('2003-08-09 12:12:12')
-      create_page "Sleepy",  :published_at => DateTime.parse('2005-10-07 12:12:12')
-      create_page "Sneezy",  :status_id => Status[:draft].id
+      create_page "Bashful", :published_at => DateTime.parse('2005-10-07 12:12:12')
+      create_page "Doc",     :published_at => DateTime.parse('2004-09-08 12:12:12')
+      create_page "Dopey",   :published_at => DateTime.parse('2003-08-09 12:12:12')
+      create_page "Grumpy",  :published_at => DateTime.parse('2002-07-10 12:12:12')
+      create_page "Happy",   :published_at => DateTime.parse('2001-06-11 12:12:12')
+      create_page "Sleepy",  :status_id => Status[:draft].id
+      create_page "Sneezy",  :published_at => DateTime.parse('2000-05-12 12:12:12')
     end
   end
   

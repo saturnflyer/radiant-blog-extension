@@ -101,7 +101,8 @@ module SiblingTags
   end
   
   def find_previous_sibling(tag)
-    tag.locals.page.parent.children.find(:first, siblings_find_options(tag,"previous"))
+    sorted = tag.locals.page.parent.children.find(:all, siblings_find_options(tag,"previous"))
+    sorted.last unless sorted.empty?
     # tag.locals.siblings.find(:first, siblings_find_options(tag,"previous"))
   end
   
@@ -123,9 +124,9 @@ module SiblingTags
       end
     else
       if direction == "previous"
-        next_condition = " and (#{by} < ?)"
-      else
         next_condition = " and (#{by} > ?)"
+      else
+        next_condition = " and (#{by} < ?)"
       end
     end
     

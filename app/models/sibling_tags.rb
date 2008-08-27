@@ -2,12 +2,36 @@ module SiblingTags
   include Radiant::Taggable
   
   desc %{
-    Gives access to a page's siblings.
+    Gives access to a page's siblings. 
   }
   tag 'siblings' do |tag|
-    tag.locals.siblings = tag.locals.page.parent.children
-    tag.expand
+    if tag.locals.page.parent
+      tag.locals.siblings = tag.locals.page.parent.children
+      tag.expand
+    end
   end
+  
+  desc %{
+    Only renders the contents of this tag if the current page has any published siblings.
+  }
+  tag 'if_siblings' do |tag|
+    if parent = tag.locals.page.parent
+      if parent.children.size > 1
+        tag.expand
+      end
+    end
+  end
+  
+  desc %{
+    Only renders the contents of this tag if the current page has no published siblings.
+  }
+  tag 'unless_siblings' do |tag|
+    if !tag.locals.page.parent or tag.locals.page.parent.children.size <= 1
+      tag.expand
+    end
+  end
+  
+  
   
   desc %{
     Only render the contents of this tag if the current page has a sibling *after* it, when sorted according to the @order@ and @by@ options. 

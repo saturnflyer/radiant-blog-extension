@@ -3,7 +3,27 @@ require File.dirname(__FILE__) + '/../spec_helper'
 describe "Sibling Tags" do
   scenario :sibling_pages
   
+  describe "called from the home page" do
+    it "should output nothing" do
+      page(:home).should render('<r:siblings:next><r:title/></r:siblings:next>').as('')
+    end
+    it "should not have any siblings" do
+      page(:home).should render('<r:if_siblings>NO!</r:if_siblings>').as('')
+      page(:home).should render('<r:unless_siblings>YES</r:unless_siblings>').as('YES')
+    end
+  end
+  
   describe "called from an only child" do
+    
+    it "should not have any siblings" do
+      page(:solo).should render('<r:if_siblings>NO!</r:if_siblings>').as('')
+      page(:solo).should render('<r:unless_siblings>YES</r:unless_siblings>').as('YES')
+    end
+    
+    it "should render contents of <r:siblings/> when there are none" do
+      page(:solo)
+      page.should render('<r:siblings>visible</r:siblings>').as('visible')
+    end
     
     it "should not render unless_next/previous contents" do
       page(:solo)
@@ -30,6 +50,11 @@ describe "Sibling Tags" do
   end
   
   describe "called from a child with a sibling" do
+    
+    it "should have a sibling" do
+      page(:kate).should render('<r:if_siblings>YES</r:if_siblings>').as('YES')
+      page(:kate).should render('<r:unless_siblings>NO!</r:unless_siblings>').as('')
+    end
     
     it "should use next page with default sort options" do
       page(:kate)
@@ -76,15 +101,11 @@ describe "Sibling Tags" do
     
     it "should skip unpublished pages when looking for previous" do
       page(:sneezy).should render('<r:siblings:previous by="title"><r:title/></r:siblings:previous>').as('Happy')
-      
-      
       page(:happy).should render('<r:siblings:previous><r:title/></r:siblings:previous>').as('Sneezy')
     end
-    
   end
   
   describe "called from scope other than the current page" do
-  
     it "should operate within the specified scope" do
       page(:home)
       page.should render('<r:find url="/mother-of-two"><r:children:first><r:siblings:next><r:title/></r:siblings:next></r:children:first></r:find>').as('Amy')
@@ -92,7 +113,6 @@ describe "Sibling Tags" do
       page.should render('<r:find url="/mother-of-two"><r:children:last><r:siblings:next><r:title/></r:siblings:next></r:children:last></r:find>').as('')
       page.should render('<r:find url="/mother-of-two"><r:children:first><r:siblings:previous><r:title/></r:siblings:previous></r:children:first></r:find>').as('')
     end
-  
   end
   
   private
@@ -103,25 +123,6 @@ describe "Sibling Tags" do
     else
       @page = pages(symbol)
     end
-  end
-
-  def page_children_each_tags(attr = nil)
-    attr = ' ' + attr unless attr.nil?
-    "<r:children:each#{attr}><r:slug /> </r:children:each>"
-  end
-
-  def page_children_first_tags(attr = nil)
-    attr = ' ' + attr unless attr.nil?
-    "<r:children:first#{attr}><r:slug /></r:children:first>"
-  end
-
-  def page_children_last_tags(attr = nil)
-    attr = ' ' + attr unless attr.nil?
-    "<r:children:last#{attr}><r:slug /></r:children:last>"
-  end
-
-  def page_eachable_children(page)
-    page.children.select(&:published?).reject(&:virtual)
   end
   
 end

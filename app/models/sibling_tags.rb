@@ -5,8 +5,7 @@ module SiblingTags
     Gives access to a page's siblings.
   }
   tag 'siblings' do |tag|
-    # tag.locals.siblings = tag.locals.page.siblings
-    tag.locals.siblings = tag.locals.page.parent.children - [self]
+    tag.locals.siblings = tag.locals.page.parent.children
     tag.expand
   end
   
@@ -94,16 +93,12 @@ module SiblingTags
   private
   
   def find_next_sibling(tag)
-    # todo - work out why tag.locals.siblings (which is set in the r:siblings tag)
-    # doesn't work, but tag.locals.page.parent.children does!
-    tag.locals.page.parent.children.find(:first, siblings_find_options(tag,"next"))
-    # tag.locals.siblings.find(:first, siblings_find_options(tag,"next"))
+    tag.locals.siblings.find(:first, siblings_find_options(tag,"next"))
   end
   
   def find_previous_sibling(tag)
-    sorted = tag.locals.page.parent.children.find(:all, siblings_find_options(tag,"previous"))
+    sorted = tag.locals.siblings.find(:all, siblings_find_options(tag,"previous"))
     sorted.last unless sorted.empty?
-    # tag.locals.siblings.find(:first, siblings_find_options(tag,"previous"))
   end
   
   def siblings_find_options(tag,direction="next")
@@ -131,7 +126,7 @@ module SiblingTags
     end
     
     options[:conditions].first << next_condition
-    options[:conditions] << self.send(by)
+    options[:conditions] << tag.locals.page.send(by)
     options
   end
   

@@ -31,3 +31,56 @@ This extension does not modify the database, so there is no need to run any migr
 == Usage
 
 When you restart you Radiant site, you should have access to the sibling tags in regular pages of your site. Documentation for each individual tag is provided within Radiant. If you go to edit a page, then click the '<b>Available tags</b>' link, you should see a list of all the available tags. You can filter the list, by typing 'sibling' into the field at the top right of the window.
+
+For examples of usage, we'll use the following site map:
+
+  Title                 Date of Publication
+  ----------------      -------------------
+  Home                  
+    \_Articles          
+        \_Apple         2008-02-29
+        \_Brocolli      2007-12-17
+        \_Carrot        2008-01-25
+
+Using the sibling tags, you can access immediate neighbours of a page. But which pages are considered neighbours depends upon how you shuffle the deck! You can sort pages by any field that is stored in the database. Most likely you will want to sort by date of publication, or  by page title. These could also be arranged in ascending or descending order. 
+
+By default, pages are sorted in ascending order of publication, i.e. from oldest to newest. The children of 'Articles' in the above site map would be arranged as follows:
+
+  Default order:  Brocolli, Carrot, Apple
+
+Lets examine the following snippet of code:
+
+  <r:siblings>
+    <r:previous>Previous article: <r:link/></r:previous>
+    <r:next>Next article: <r:link/></r:next>
+  </r:siblings>
+
+If this was called on the 'Carrot' page, it would output:
+
+  Previous article: <a href="/articles/brocolli">Brocolli</a>
+  Next article: <a href="/articles/apple">Apple</a>
+
+Whereas, if the same snippet was called from the 'Brocolli' page, it would output:
+
+  Next article: <a href="/articles/carrot">Carrot</a>
+
+When arranged in the default sort order, 'Brocolli' comes first, so it has no predecessor. Hence, the contents of the <tt><r:siblings:previous></r:siblings:previous></tt> tag are not output.
+
+You can change the sort order using the <tt>order</tt> and <tt>by</tt> attributes. <tt>order</tt> can either be <tt>asc</tt> or <tt>desc</tt>, whereas <tt>by</tt> can be any column name associated with a page in the database.
+
+The following lists demonstrate how the 'Articles' pages above could be sorted:
+
+  order="desc"               Apple, Carrot, Brocolli
+  by="title"                 Apple, Brocolli, Carrot
+  by="title" order="desc"    Carrot, Brocolli, Apple
+
+Remember that the default values are <tt>order="asc"</tt> and <tt>by="published_at"</tt>, so if either of these are not specified, they fall back to those values.
+
+One final example demonstrates how these sorting options may be applied:
+
+  <r:siblings>
+    <r:previous by="title">Previous in alphabet:<r:link/></r:previous>
+    <r:unless_previous by="title">This is the start of the alphabet.</r:unless_previous>
+    <r:next by="title">Next in alphabet: <r:link/></r:next>
+    <r:unless_next by="title">This is the end of the alphabet.</r:unless_next>
+  </r:siblings>

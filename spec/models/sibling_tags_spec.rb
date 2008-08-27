@@ -86,9 +86,11 @@ describe "Sibling Tags" do
   describe "called from scope other than the current page" do
   
     it "should operate within the specified scope" do
-      # page(:home).should render('<r:find url="/mother-of-two"><r:children:first><r:title/></r:children:first></r:find>').as('Kate')
-      
-      page(:home).should render('<r:find url="/mother-of-two"><r:children:first><r:siblings:next><r:title/></r:siblings:next></r:children:first></r:find>').as('Amy')
+      page(:home)
+      page.should render('<r:find url="/mother-of-two"><r:children:first><r:siblings:next><r:title/></r:siblings:next></r:children:first></r:find>').as('Amy')
+      page.should render('<r:find url="/mother-of-two"><r:children:last><r:siblings:previous><r:title/></r:siblings:previous></r:children:last></r:find>').as('Kate')
+      page.should render('<r:find url="/mother-of-two"><r:children:last><r:siblings:next><r:title/></r:siblings:next></r:children:last></r:find>').as('')
+      page.should render('<r:find url="/mother-of-two"><r:children:first><r:siblings:previous><r:title/></r:siblings:previous></r:children:first></r:find>').as('')
     end
   
   end

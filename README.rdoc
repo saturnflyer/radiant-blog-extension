@@ -46,14 +46,14 @@ Using the sibling tags, you can access immediate neighbours of a page. But which
 
 By default, pages are sorted in ascending order of publication, i.e. from oldest to newest. The children of 'Articles' in the above site map would be arranged as follows:
 
-  Default order:  Brocolli, Carrot, Apple
+  Default order\:  Brocolli, Carrot, Apple
 
 Lets examine the following snippet of code:
 
-  <tt><r:siblings>
-  <r:previous>Previous article: <r:link/></r:previous>
-  <r:next>Next article: <r:link/></r:next>
-  </r:siblings></tt>
+  <r\:siblings>
+  <r\:previous>Previous article: <r\:link/></r\:previous>
+  <r\:next>Next article: <r\:link/></r\:next>
+  </r\:siblings>
 
 If this was called on the 'Carrot' page, it would output:
 
@@ -64,7 +64,7 @@ Whereas, if the same snippet was called from the 'Brocolli' page, it would outpu
 
   Next article: <a href="/articles/carrot">Carrot</a>
 
-When arranged in the default sort order, 'Brocolli' comes first, so it has no predecessor. Hence, the contents of the <tt><r:siblings:previous></r:siblings:previous></tt> tag are not output.
+When arranged in the default sort order, 'Brocolli' comes first, so it has no predecessor. Hence, the contents of the <tt><r\:siblings:previous></r\:siblings:previous></tt> tag are not output.
 
 You can change the sort order using the <tt>order</tt> and <tt>by</tt> attributes. <tt>order</tt> can either be <tt>asc</tt> or <tt>desc</tt>, whereas <tt>by</tt> can be any column name associated with a page in the database.
 
@@ -78,9 +78,9 @@ Remember that the default values are <tt>order="asc"</tt> and <tt>by="published_
 
 One final example demonstrates how these sorting options may be applied:
 
-  <tt><r:siblings>
-    <r:previous by="title">Previous in alphabet:<r:link/></r:previous>
-    <r:unless_previous by="title">This is the start of the alphabet.</r:unless_previous>
-    <r:next by="title">Next in alphabet: <r:link/></r:next>
-    <r:unless_next by="title">This is the end of the alphabet.</r:unless_next>
-  </r:siblings></tt>
+  <r\:siblings>
+    <r\:previous by="title">Previous in alphabet:<r\:link/></r\:previous>
+    <r\:unless_previous by="title">This is the start of the alphabet.</r\:unless_previous>
+    <r\:next by="title">Next in alphabet: <r\:link/></r\:next>
+    <r\:unless_next by="title">This is the end of the alphabet.</r\:unless_next>
+  </r\:siblings>

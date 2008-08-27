@@ -51,8 +51,8 @@ By default, pages are sorted in ascending order of publication, i.e. from oldest
 Lets examine the following snippet of code:
 
   <r:siblings>
-    <r:previous>Previous article: <r:link/></r:previous>
-    <r:next>Next article: <r:link/></r:next>
+  <r:previous>Previous article: <r:link/></r:previous>
+  <r:next>Next article: <r:link/></r:next>
   </r:siblings>
 
 If this was called on the 'Carrot' page, it would output:
@@ -70,17 +70,17 @@ You can change the sort order using the <tt>order</tt> and <tt>by</tt> attribute
 
 The following lists demonstrate how the 'Articles' pages above could be sorted:
 
-  order="desc"               Apple, Carrot, Brocolli
-  by="title"                 Apple, Brocolli, Carrot
-  by="title" order="desc"    Carrot, Brocolli, Apple
+  order="desc":                Apple, Carrot, Brocolli
+  by="title":                  Apple, Brocolli, Carrot
+  by="title" order="desc":     Carrot, Brocolli, Apple
 
 Remember that the default values are <tt>order="asc"</tt> and <tt>by="published_at"</tt>, so if either of these are not specified, they fall back to those values.
 
 One final example demonstrates how these sorting options may be applied:
 
   <r:siblings>
-    <r:previous by="title">Previous in alphabet:<r:link/></r:previous>
-    <r:unless_previous by="title">This is the start of the alphabet.</r:unless_previous>
-    <r:next by="title">Next in alphabet: <r:link/></r:next>
-    <r:unless_next by="title">This is the end of the alphabet.</r:unless_next>
+  <r:previous by="title">Previous in alphabet:<r:link/></r:previous>
+  <r:unless_previous by="title">This is the start of the alphabet.</r:unless_previous>
+  <r:next by="title">Next in alphabet: <r:link/></r:next>
+  <r:unless_next by="title">This is the end of the alphabet.</r:unless_next>
   </r:siblings>

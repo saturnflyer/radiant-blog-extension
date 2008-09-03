@@ -12,6 +12,7 @@ class BlogExtension < Radiant::Extension
   
   def activate
     Page.send :include, AuthorTags
+    Page.send :include, SiblingTags
     User.class_eval {
       has_many :pages, :foreign_key => :created_by_id unless self.respond_to?(:pages)
     }

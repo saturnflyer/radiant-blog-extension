@@ -1,5 +1,3 @@
-# I think this is the one that should be moved to the extension Rakefile template
-
 # In rails 1.2, plugins aren't available in the path until they're loaded.
 # Check to see if the rspec plugin is installed first and require
 # it if it is.  If not, use the gem version.
@@ -62,14 +60,6 @@ namespace :spec do
       t.spec_files = FileList["spec/#{sub}/**/*_spec.rb"]
     end
   end
-  
-  # Hopefully no one has written their extensions in pre-0.9 style
-  # desc "Translate specs from pre-0.9 to 0.9 style"
-  # task :translate do
-  #   translator = ::Spec::Translator.new
-  #   dir = RAILS_ROOT + '/spec'
-  #   translator.translate(dir, dir)
-  # end
 
   # Setup specs for stats
   task :statsetup do
@@ -99,17 +89,17 @@ namespace :spec do
   end
 end
 
-desc 'Generate documentation for the author extension.'
+desc 'Generate documentation for the blog extension.'
 Rake::RDocTask.new(:rdoc) do |rdoc|
   rdoc.rdoc_dir = 'rdoc'
-  rdoc.title    = 'AuthorExtension'
+  rdoc.title    = 'BlogExtension'
   rdoc.options << '--line-numbers' << '--inline-source'
   rdoc.rdoc_files.include('README')
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
 
 # For extensions that are in transition
-desc 'Test the author extension.'
+desc 'Test the blog extension.'
 Rake::TestTask.new(:test) do |t|
   t.libs << 'lib'
   t.pattern = 'test/**/*_test.rb'

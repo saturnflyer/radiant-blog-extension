@@ -59,6 +59,18 @@ describe "Sibling Tags" do
     end
   end
   
+  describe "<r:siblings:each_before>" do
+    it "should render its contents for each sibling following the current one in order" do
+      page(:dopey).should render('<r:siblings:each_before><r:title /> </r:siblings:each_before>').as('Grumpy Happy Sneezy ')
+    end
+  end
+  
+  describe "<r:siblings:each_after>" do
+    it "should render its contents for each sibling following the current one in order" do
+      page(:dopey).should render('<r:siblings:each_after><r:title /> </r:siblings:each_after>').as('Doc Bashful ')
+    end
+  end
+  
   describe "<r:siblings:previous>" do
     it 'should output nothing if the current page has no siblings' do
       page(:home).should render('<r:siblings:previous>false</r:siblings:previous>').as('')

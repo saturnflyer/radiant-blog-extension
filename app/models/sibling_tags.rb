@@ -95,6 +95,20 @@ module SiblingTags
     end
     
     desc %{
+      Displays its contents for each of the following pages according to the given
+      attributes. See @<r:siblings:each>@ for details about the attributes.
+    }
+    tag 'siblings:each_before' do |tag|
+      result = []
+      tag.locals.siblings = find_siblings_before(tag)
+      tag.locals.siblings.each do |sib|
+        tag.locals.page = sib
+        result << tag.expand
+      end
+      result
+    end
+    
+    desc %{
       All Radiant tags within a @<r:siblings:previous/>@ block are interpreted in the context
       of the previous sibling page, when sorted according to the @order@ and @by@ options.
       
@@ -108,6 +122,20 @@ module SiblingTags
       tag.expand if tag.locals.page = find_previous_sibling(tag)
     end
     
+    desc %{
+      Displays its contents for each of the following pages according to the given
+      attributes. See @<r:siblings:each>@ for details about the attributes.
+    }
+    tag 'siblings:each_after' do |tag|
+      result = []
+      tag.locals.siblings = find_siblings_after(tag)
+      tag.locals.siblings.each do |sib|
+        tag.locals.page = sib
+        result << tag.expand
+      end
+      result
+    end
+    
     private
     
     def find_next_sibling(tag)
@@ -117,11 +145,25 @@ module SiblingTags
       end
     end
     
+    def find_siblings_before(tag)
+      if tag.locals.page.parent
+        tag.attr['adjacent'] = 'previous'
+        tag.locals.page.parent.children.find(:all, adjacent_siblings_find_options(tag)).reverse!
+      end
+    end
+    
     def find_previous_sibling(tag)
       if tag.locals.page.parent
         tag.attr['adjacent'] = 'previous'
         sorted = tag.locals.page.parent.children.find(:all, adjacent_siblings_find_options(tag))
         sorted.last unless sorted.blank?
+      end
+    end
+    
+    def find_siblings_after(tag)
+      if tag.locals.page.parent
+        tag.attr['adjacent'] = 'next'
+        tag.locals.page.parent.children.find(:all, adjacent_siblings_find_options(tag))
       end
     end
     

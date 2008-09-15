@@ -54,6 +54,9 @@ describe "Sibling Tags" do
     it 'should not output its contents if the current page has siblings, but not next in order' do
       page(:bashful).should render('<r:siblings:next>true</r:siblings:next>').as('')
     end
+    it "should set the scoped page to the previous page in order" do
+      page(:doc).should render('<r:siblings:next><r:title /></r:siblings:next>').as('Bashful')
+    end
   end
   
   describe "<r:siblings:previous>" do
@@ -65,6 +68,9 @@ describe "Sibling Tags" do
     end
     it 'should not output its contents if the current page has siblings, but not previous in order' do
       page(:sneezy).should render('<r:siblings:previous>true</r:siblings:previous>').as('')
+    end
+    it "should set the scoped page to the previous page in order" do
+      page(:doc).should render('<r:siblings:previous><r:title /></r:siblings:previous>').as('Dopey')
     end
   end
   

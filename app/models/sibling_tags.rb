@@ -91,9 +91,7 @@ module SiblingTags
       <pre><code><r:siblings:next [by="published_at|title"] [order="asc|desc"] [status="published|all"]/>...</r:siblings:next></code></pre>
     }
     tag 'siblings:next' do |tag|
-      if tag.locals.page = find_next_sibling(tag)
-        tag.expand
-      end
+      tag.expand if tag.locals.page = find_next_sibling(tag)
     end
     
     desc %{
@@ -107,9 +105,7 @@ module SiblingTags
       [status="published|all"]/>...</r:siblings:previous></code></pre>
     }
     tag 'siblings:previous' do |tag|
-      if tag.locals.page = find_previous_sibling(tag)
-        tag.expand
-      end
+      tag.expand if tag.locals.page = find_previous_sibling(tag)
     end
     
     private
@@ -124,7 +120,8 @@ module SiblingTags
     def find_previous_sibling(tag)
       if tag.locals.page.parent
         tag.attr['adjacent'] = 'previous'
-        tag.locals.page.parent.children.find(:first, adjacent_siblings_find_options(tag))
+        sorted = tag.locals.page.parent.children.find(:all, adjacent_siblings_find_options(tag))
+        sorted.last unless sorted.blank?
       end
     end
     

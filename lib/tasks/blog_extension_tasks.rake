@@ -18,8 +18,8 @@ namespace :radiant do
       desc "Copies public assets of the Author to the instance public/ directory."
       task :update => :environment do
         is_svn_or_dir = proc {|path| path =~ /\.svn/ || File.directory?(path) }
-        Dir[AuthorExtension.root + "/public/**/*"].reject(&is_svn_or_dir).each do |file|
-          path = file.sub(AuthorExtension.root, '')
+        Dir[BlogExtension.root + "/public/**/*"].reject(&is_svn_or_dir).each do |file|
+          path = file.sub(BlogExtension.root, '')
           directory = File.dirname(path)
           puts "Copying #{path}..."
           mkdir_p RAILS_ROOT + directory

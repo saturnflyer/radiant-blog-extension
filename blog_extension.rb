@@ -16,6 +16,8 @@ class BlogExtension < Radiant::Extension
     User.class_eval {
       has_many :pages, :foreign_key => :created_by_id unless self.respond_to?(:pages)
     }
+    
+    admin.user.edit.add :form, 'bio', :after => 'edit_notes'
   end
   
   def deactivate

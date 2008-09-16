@@ -22,7 +22,7 @@ module AuthorTags
     end
   end
   
-  [:name, :email].each do |att|
+  [:name, :email, :bio].each do |att|
     desc %{
       Renders the #{att} of the current author
     }
@@ -68,9 +68,10 @@ module AuthorTags
     result
   end
   
-  [:name, :email].each do |method|
+  [:name, :email, :bio].each do |method|
     desc %{
-      Renders the #{method} of the current author
+      Renders the #{method} of the current author. This may be
+      used within @<r:authors:each>@ or @<r:author></r:author>@
     }
     tag "authors:each:#{method}" do |tag|
       tag.locals.author.send(method)
@@ -97,7 +98,20 @@ module AuthorTags
   end
   
   desc %{
-    Renders the contents for each page of the current author.
+    Renders the contents for each page of the current author. This includes 
+    the home page and any page that the author has created. You may limit 
+    the results to the children of a particular URL by passing in a value
+    to the @url@ attribute.
+    
+    *Usage:*
+    <pre><code><r:pages:each>...all pages of the current author...</r:pages:each></code></pre>
+    
+    By using the @url@ attribute, you may loop through only the children of
+    the page at the given URL.
+    
+    *Limitation Example:*
+    <pre><code><r:pages:each url="/">... only children of (and not including)
+     the home page...</r:pages:each></code></pre>
   }
   tag "pages:each" do |tag|
     attr = tag.attr.symbolize_keys

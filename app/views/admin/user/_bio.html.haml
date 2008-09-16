@@ -1,0 +1,8 @@
+%tr
+  %th.label
+    %label.optional{:for=>"bio"} Bio
+  %td.field
+    ~ text_area "user", "bio", :size => '40x10', :class => "textarea bio_textarea" 
+  %td.help
+    Optional description of the Author.
+- include_stylesheet 'admin/authors'

@@ -27,6 +27,21 @@ describe "AuthorTags" do
     it "should render the email of the current author" do
       page.should render('<r:author:email />').as('admin@example.com')
     end
+    it "should render nothing if the current author has no email" do
+      page.created_by.update_attribute('email',nil)
+      page.should render('<r:author:email />').as('')
+    end
+  end
+  
+  describe "<r:author:bio>" do
+    it "should render the bio of the current author" do
+      page.created_by.update_attribute('bio',"This is all about me.")
+      page.should render('<r:author:bio />').as('This is all about me.')
+    end
+    it "should render nothing if the current author has no bio" do
+      page.created_by.update_attribute('bio',nil)
+      page.should render('<r:author:bio />').as('')
+    end
   end
   
   describe "<r:authors>" do
@@ -78,6 +93,17 @@ describe "AuthorTags" do
   end
   
   describe "<r:authors:each:email>" do
+    it "should render the email of the current author" do
+      page.should render("<r:authors:each><r:email /> </r:authors:each>").as('admin@example.com another@example.com developer@example.com existing@example.com non_admin@example.com ')
+    end
+    
+    it "should render nothing if the current author has no email" do
+      users(:admin).update_attribute(:email, nil)
+      page.should render('<r:authors:each login="admin"><r:email /></r:authors:each>').as('')
+    end
+  end
+  
+  describe "<r:authors:each:bio>" do
     it "should render the email of the current author" do
       page.should render("<r:authors:each><r:email /> </r:authors:each>").as('admin@example.com another@example.com developer@example.com existing@example.com non_admin@example.com ')
     end

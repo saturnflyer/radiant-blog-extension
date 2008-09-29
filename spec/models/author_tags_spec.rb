@@ -42,6 +42,11 @@ describe "AuthorTags" do
       page.created_by.update_attribute('bio',nil)
       page.should render('<r:author:bio />').as('')
     end
+    it "should filter the bio content with the bio_filter" do
+      page.created_by.update_attribute('bio',"This is *all* about me.")
+      page.created_by.update_attribute('bio_filter_id','Textile')
+      page.should render('<r:author:bio />').as('<p>This is <strong>all</strong> about me.</p>')
+    end
   end
   
   describe "<r:authors>" do
@@ -104,13 +109,14 @@ describe "AuthorTags" do
   end
   
   describe "<r:authors:each:bio>" do
-    it "should render the email of the current author" do
-      page.should render("<r:authors:each><r:email /> </r:authors:each>").as('admin@example.com another@example.com developer@example.com existing@example.com non_admin@example.com ')
+    it "should render the bio of the current author" do
+      User.find(:all).each {|user| user.update_attribute('bio', "My bio.")}
+      page.should render("<r:authors:each><r:bio /> </r:authors:each>").as('My bio. My bio. My bio. My bio. My bio. ')
     end
     
-    it "should render nothing if the current author has no email" do
-      users(:admin).update_attribute(:email, nil)
-      page.should render('<r:authors:each login="admin"><r:email /></r:authors:each>').as('')
+    it "should render nothing if the current author has no bio" do
+      users(:admin).update_attribute(:bio, nil)
+      page.should render('<r:authors:each login="admin"><r:bio /></r:authors:each>').as('')
     end
   end
   

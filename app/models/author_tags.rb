@@ -22,12 +22,30 @@ module AuthorTags
     end
   end
   
-  [:name, :email, :bio].each do |att|
+  ['authors:each', 'author'].each do |auth|
+    [:name, :email].each do |att|
+      desc %{
+        Renders the #{att} of the current author
+      }
+      tag "#{auth}:#{att}" do |tag|
+        tag.locals.author.send("#{att}")
+      end
+    end
+  end
+  
+  ['authors:each', 'author'].each do |auth|
     desc %{
-      Renders the #{att} of the current author
+      Renders the bio of the current author
     }
-    tag "author:#{att}" do |tag|
-      tag.locals.author.send(att)
+    tag "#{auth}:bio" do |tag|
+      author = tag.locals.author
+      text = author.bio
+      unless author.bio_filter_id.blank?
+        text_filter = (author.bio_filter_id + "Filter").constantize.new
+        text_filter.filter(text)
+      else
+        text
+      end
     end
   end
   
@@ -68,15 +86,30 @@ module AuthorTags
     result
   end
   
-  [:name, :email, :bio].each do |method|
-    desc %{
-      Renders the #{method} of the current author. This may be
-      used within @<r:authors:each>@ or @<r:author></r:author>@
-    }
-    tag "authors:each:#{method}" do |tag|
-      tag.locals.author.send(method)
-    end
-  end
+  # [:name, :email].each do |method|
+  #   desc %{
+  #     Renders the #{method} of the current author. This may be
+  #     used within @<r:authors:each>@ or @<r:author></r:author>@
+  #   }
+  #   tag "authors:each:#{method}" do |tag|
+  #     tag.locals.author.send(method)
+  #   end
+  # end
+  # 
+  # desc %{
+  #   Renders the bio of the current author with the selected filter.
+  #   This may be used within @<r:authors:each>@ or @<r:author></r:author>@
+  # }
+  # tag "authors:each:bio" do |tag|
+  #   author = tag.locals.author
+  #   text = author.bio
+  #   unless author.bio_filter_id.blank?
+  #     text_filter = (author.bio_filter_id + "Filter").constantize.new
+  #     text_filter.filter(text)
+  #   else
+  #     text
+  #   end
+  # end
   
   desc %{
     Sets the scope for the current author's pages.

@@ -2,6 +2,7 @@
   %th.label
     %label.optional{:for=>"bio"} Bio
   %td.field
+    ~ select_tag "user[bio_filter_id]", options_for_select([['<none>', '']] + TextFilter.descendants.map { |s| s.filter_name }.sort, @user.bio_filter_id), :style => 'float: left; margin-left: 10px'
     ~ text_area "user", "bio", :size => '40x10', :class => "textarea bio_textarea" 
   %td.help
     Optional description of the Author.

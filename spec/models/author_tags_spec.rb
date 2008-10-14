@@ -49,6 +49,37 @@ describe "AuthorTags" do
     end
   end
   
+  describe "<r:author:gravatar_url />" do
+    before :each do
+      page.created_by.stub!(:email).and_return("seancribbs@gmail.com")
+      @base_url = "http://www.gravatar.com/avatar/8802b1fa1b53e2197beea9454244f847"
+    end
+
+    it "should render the base url" do
+      page.should render('<r:author:gravatar_url />').as(@base_url)
+    end
+    
+    it "should render the url with a size" do
+      page.should render('<r:author:gravatar_url size="30" />').as("#{@base_url}?s=30")
+    end
+    
+    it "should render the url with a rating" do
+      page.should render('<r:author:gravatar_url rating="G" />').as("#{@base_url}?r=g")
+    end
+    
+    it "should render the url with a default" do
+      page.should render('<r:author:gravatar_url default="identicon" />').as("#{@base_url}?d=identicon")
+    end
+    
+    it "should render the url with a format" do
+      page.should render('<r:author:gravatar_url format="jpg" />').as("#{@base_url}.jpg")
+    end
+    
+    it "should render the url with all options" do
+      page.should render('<r:author:gravatar_url size="30" rating="G" default="identicon" format="jpg"/>').as("#{@base_url}.jpg?s=30&d=identicon&r=g")
+    end
+  end
+  
   describe "<r:authors>" do
     it "should render it's contents" do
       page.should render('<r:authors>Authors</r:authors>').as('Authors')

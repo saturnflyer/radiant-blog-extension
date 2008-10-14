@@ -1,3 +1,4 @@
+require 'digest/md5'
 module AuthorTags
   include Radiant::Taggable
   class TagError < StandardError; end
@@ -45,6 +46,28 @@ module AuthorTags
         text_filter.filter(text)
       else
         text
+      end
+    end
+    
+    desc %{
+      Renders the gravatar URL for the current author.
+    }
+    tag "#{auth}:gravatar_url" do |tag|
+      author = tag.locals.author
+      size = tag.attr['size']
+      format = tag.attr['format']
+      rating = tag.attr['rating']
+      default = tag.attr['default']
+      md5 = Digest::MD5.hexdigest(author.email)
+      returning "http://www.gravatar.com/avatar/#{md5}" do |url|
+        url << ".#{format.downcase}" if format
+        if size || rating || default
+          attrs = []
+          attrs << "s=#{size}" if size
+          attrs << "d=#{default}" if default
+          attrs << "r=#{rating.downcase}" if rating
+          url << "?#{attrs.join('&')}"
+        end
       end
     end
   end

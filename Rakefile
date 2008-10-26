@@ -1,7 +1,9 @@
+# I think this is the one that should be moved to the extension Rakefile template
+ 
 # In rails 1.2, plugins aren't available in the path until they're loaded.
 # Check to see if the rspec plugin is installed first and require
 # it if it is.  If not, use the gem version.
-
+ 
 # Determine where the RSpec plugin is by loading the boot
 unless defined? RADIANT_ROOT
   ENV["RAILS_ENV"] = "test"
@@ -14,30 +16,30 @@ unless defined? RADIANT_ROOT
     require "#{File.expand_path(File.dirname(__FILE__) + "/../../../")}/config/boot"
   end
 end
-
+ 
 require 'rake'
 require 'rake/rdoctask'
 require 'rake/testtask'
-
+ 
 rspec_base = File.expand_path(RADIANT_ROOT + '/vendor/plugins/rspec/lib')
 $LOAD_PATH.unshift(rspec_base) if File.exist?(rspec_base)
 require 'spec/rake/spectask'
 # require 'spec/translator'
-
+ 
 # Cleanup the RADIANT_ROOT constant so specs will load the environment
 Object.send(:remove_const, :RADIANT_ROOT)
-
+ 
 extension_root = File.expand_path(File.dirname(__FILE__))
-
+ 
 task :default => :spec
 task :stats => "spec:statsetup"
-
+ 
 desc "Run all specs in spec directory"
 Spec::Rake::SpecTask.new(:spec) do |t|
   t.spec_opts = ['--options', "\"#{extension_root}/spec/spec.opts\""]
   t.spec_files = FileList['spec/**/*_spec.rb']
 end
-
+ 
 namespace :spec do
   desc "Run all specs in spec directory with RCov"
   Spec::Rake::SpecTask.new(:rcov) do |t|
@@ -52,7 +54,7 @@ namespace :spec do
     t.spec_opts = ["--format", "specdoc", "--dry-run"]
     t.spec_files = FileList['spec/**/*_spec.rb']
   end
-
+ 
   [:models, :controllers, :views, :helpers].each do |sub|
     desc "Run the specs under spec/#{sub}"
     Spec::Rake::SpecTask.new(sub) do |t|
@@ -60,7 +62,15 @@ namespace :spec do
       t.spec_files = FileList["spec/#{sub}/**/*_spec.rb"]
     end
   end
-
+  
+  # Hopefully no one has written their extensions in pre-0.9 style
+  # desc "Translate specs from pre-0.9 to 0.9 style"
+  # task :translate do
+  #   translator = ::Spec::Translator.new
+  #   dir = RAILS_ROOT + '/spec'
+  #   translator.translate(dir, dir)
+  # end
+ 
   # Setup specs for stats
   task :statsetup do
     require 'code_statistics'
@@ -74,7 +84,7 @@ namespace :spec do
     ::CodeStatistics::TEST_TYPES << "Helper specs"
     ::STATS_DIRECTORIES.delete_if {|a| a[0] =~ /test/}
   end
-
+ 
   namespace :db do
     namespace :fixtures do
       desc "Load fixtures (from spec/fixtures) into the current environment's database.  Load specific fixtures using FIXTURES=x,y"
@@ -88,23 +98,23 @@ namespace :spec do
     end
   end
 end
-
-desc 'Generate documentation for the blog extension.'
+ 
+desc 'Generate documentation for the sibling_tags extension.'
 Rake::RDocTask.new(:rdoc) do |rdoc|
   rdoc.rdoc_dir = 'rdoc'
-  rdoc.title    = 'BlogExtension'
+  rdoc.title    = 'SiblingTagsExtension'
   rdoc.options << '--line-numbers' << '--inline-source'
   rdoc.rdoc_files.include('README')
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
-
+ 
 # For extensions that are in transition
-desc 'Test the blog extension.'
+desc 'Test the sibling_tags extension.'
 Rake::TestTask.new(:test) do |t|
   t.libs << 'lib'
   t.pattern = 'test/**/*_test.rb'
   t.verbose = true
 end
-
+ 
 # Load any custom rakefiles for extension
 Dir[File.dirname(__FILE__) + '/tasks/*.rake'].sort.each { |f| require f }

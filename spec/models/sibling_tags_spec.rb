@@ -14,9 +14,11 @@ describe "Sibling Tags" do
     end
     it "should allow siblings to be ordered by the 'by' attribute" do
       page(:sneezy).should render('<r:siblings:each by="title"><r:title /> </r:siblings:each>').as('Bashful Doc Dopey Grumpy Happy ')
+      page(:sneezy).should render('<r:siblings by="title"><r:each><r:title /> </r:each></r:siblings>').as('Bashful Doc Dopey Grumpy Happy ')
     end
     it "should allow siblings to be sorted with the 'order' attribute when using 'by'" do
       page(:sneezy).should render('<r:siblings:each by="slug" order="asc"><r:title /> </r:siblings:each>').as('Bashful Doc Dopey Grumpy Happy ')
+      page(:sneezy).should render('<r:siblings by="slug" order="asc"><r:each><r:title /> </r:each></r:siblings>').as('Bashful Doc Dopey Grumpy Happy ')
     end
     it "should exclude the current page" do
       page(:sneezy).should render('<r:siblings:each><r:title/> </r:siblings:each>').as('Happy Grumpy Dopey Doc Bashful ')
@@ -57,6 +59,15 @@ describe "Sibling Tags" do
     it "should set the scoped page to the next page in order" do
       page(:doc).should render('<r:siblings:next><r:title /></r:siblings:next>').as('Bashful')
     end
+    it "should work recursively when called more than once" do
+      page(:dopey).should render('<r:siblings><r:next><r:next><r:title /></r:next></r:next></r:siblings>').as('Bashful')
+    end
+    it "should order with 'by' attribute in siblings tag" do
+      page(:dopey).should render('<r:siblings by="title"><r:next><r:title/></r:next></r:siblings>').as('Grumpy')
+    end
+    it "should order with 'by' attribute in next tag" do
+      page(:dopey).should render('<r:siblings:next by="title"><r:title/></r:siblings:next>').as('Grumpy')
+    end
   end
   
   describe "<r:siblings:each_before>" do
@@ -83,6 +94,15 @@ describe "Sibling Tags" do
     end
     it "should set the scoped page to the previous page in order" do
       page(:doc).should render('<r:siblings:previous><r:title /></r:siblings:previous>').as('Dopey')
+    end
+    it "should set the scoped page to the previous page in order" do
+      page(:doc).should render('<r:siblings:previous><r:previous><r:title /></r:previous></r:siblings:previous>').as('Grumpy')
+    end
+    it "should order with 'by' attribute in siblings tag" do
+      page(:dopey).should render('<r:siblings by="title"><r:previous><r:title/></r:previous></r:siblings>').as('Doc')
+    end
+    it "should order with 'by' attribute in previous tag" do
+      page(:dopey).should render('<r:siblings:previous by="title"><r:title/></r:siblings:previous>').as('Doc')
     end
   end
   

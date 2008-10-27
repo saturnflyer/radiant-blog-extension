@@ -5,6 +5,7 @@ module SiblingTags
     Set's the scope for a page's siblings. 
   }
   tag 'siblings' do |tag|
+    tag.locals.filter_attributes = tag.attr || {}
     tag.expand
   end
     
@@ -13,6 +14,7 @@ module SiblingTags
     }
     tag 'siblings:each' do |tag|
       result = []
+      inherit_filter_attributes(tag)
       tag.locals.siblings = tag.locals.page.parent.children.find(:all, siblings_find_options(tag))
       tag.locals.siblings.each do |sib|
         tag.locals.page = sib
@@ -47,6 +49,7 @@ module SiblingTags
       See @<siblings:next/>@ for a more detailed description of the sorting options.
     }
     tag 'siblings:if_next' do |tag|
+      inherit_filter_attributes(tag)
       tag.expand if find_next_sibling(tag)
     end
     
@@ -56,6 +59,7 @@ module SiblingTags
       See @<siblings:next/>@ for a more detailed description of the sorting options.
     }
     tag 'siblings:if_previous' do |tag|
+      inherit_filter_attributes(tag)
       tag.expand if find_previous_sibling(tag)
     end
     
@@ -65,6 +69,7 @@ module SiblingTags
       See @<siblings:next/>@ for a more detailed description of the sorting options.
     }
     tag 'siblings:unless_next' do |tag|
+      inherit_filter_attributes(tag)
       tag.expand unless find_next_sibling(tag)
     end
     
@@ -74,6 +79,7 @@ module SiblingTags
       See @<siblings:next/>@ for a more detailed description of the sorting options.
     }
     tag 'siblings:unless_previous' do |tag|
+      inherit_filter_attributes(tag)
       tag.expand unless find_previous_sibling(tag)
     end
     
@@ -91,6 +97,7 @@ module SiblingTags
       <pre><code><r:siblings:next [by="published_at|title"] [order="asc|desc"] [status="published|all"]/>...</r:siblings:next></code></pre>
     }
     tag 'siblings:next' do |tag|
+      inherit_filter_attributes(tag)
       tag.expand if tag.locals.page = find_next_sibling(tag)
     end
     
@@ -99,6 +106,7 @@ module SiblingTags
       attributes. See @<r:siblings:each>@ for details about the attributes.
     }
     tag 'siblings:each_before' do |tag|
+      inherit_filter_attributes(tag)
       result = []
       tag.locals.siblings = find_siblings_before(tag)
       tag.locals.siblings.each do |sib|
@@ -119,6 +127,7 @@ module SiblingTags
       [status="published|all"]/>...</r:siblings:previous></code></pre>
     }
     tag 'siblings:previous' do |tag|
+      inherit_filter_attributes(tag)
       tag.expand if tag.locals.page = find_previous_sibling(tag)
     end
     
@@ -127,6 +136,7 @@ module SiblingTags
       attributes. See @<r:siblings:each>@ for details about the attributes.
     }
     tag 'siblings:each_after' do |tag|
+      inherit_filter_attributes(tag)
       result = []
       tag.locals.siblings = find_siblings_after(tag)
       tag.locals.siblings.each do |sib|
@@ -137,6 +147,11 @@ module SiblingTags
     end
     
     private
+    
+    def inherit_filter_attributes(tag)
+      tag.attr ||= {}
+      tag.attr.reverse_merge!(tag.locals.filter_attributes)
+    end
     
     def find_next_sibling(tag)
       if tag.locals.page.parent

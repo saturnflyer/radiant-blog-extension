@@ -96,7 +96,7 @@ One final example demonstrates how these sorting options may be applied:
     <r:unless_next>This is the end of the alphabet.</r:unless_next>
   </r:siblings>
 
-== A note on specifying conditions
+== Where do the conditions go?
 
 You can specify <tt>order</tt> and <tt>by</tt> attributes inside of the <tt><r:siblings/></tt> tag itself, and these conditions are inherited by the child tags. The following examples are equivalent:
   
@@ -110,11 +110,23 @@ You can specify <tt>order</tt> and <tt>by</tt> attributes inside of the <tt><r:s
     <r:next><r:link/></r:next>
   </r:siblings>
 
-By placing the <tt>by</tt> attribute in the <tt><r:siblings/></tt> tag, we can save on repetition. However, it is not necessary to use the <tt><r:siblings/></tt> tag to next its descendant tags, and the exact same effect could be achieved using the following:
+By placing the <tt>by</tt> attribute in the <tt><r:siblings/></tt> tag, we can save on repetition. If you are planning on using both <tt><r:previous/></tt> and <tt><r:next/></tt> tags, then the second example is neater. However, if you just want to fetch one of the two, then you don't even have to nest the tags within a <tt><r:siblings/></tt> tag. Just make sure that you specify the full namespace at once, e.g.:
 
   <r:siblings:previous by="title"><r:link/></r:siblings:previous>
+
   <r:siblings:next by="title"><r:link/></r:siblings:next>
 
+When you specify conditions in the <tt><r:siblings/></tt> tag, they are inherited by nested tags, but they may also be overridden. E.g.:
+
+  <r:siblings by="title" order="asc">
+    <r:next>Next alphabetically: <r:link/></r:next>
+    <r:previous>Previous alphabetically: <r:link/></r:previous>
+    
+    <r:next by="published_at">Next chronologically</r:next>
+    <r:previous by="published_at">Previous chronologically</r:previous>
+  </r:siblings>
+
+In this example, the first usage of <tt><r:next/></tt> and <tt><r:previous/></tt> inherit the attributes set in <tt><r:siblings/></tt>. The second time these same tags are used, they provide their own attributes, and these override the values set by the parent <tt><r:siblings/></tt> tag.
 
 
 = Credits

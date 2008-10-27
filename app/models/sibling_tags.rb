@@ -205,7 +205,7 @@ module SiblingTags
     
     def siblings_find_options(tag)
       options = children_find_options(tag)
-      options[:conditions].first << ' and id != ?'
+      options[:conditions].first << ' and (id != ?)'
       options[:conditions] << tag.locals.page.id
       options
     end

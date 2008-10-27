@@ -74,11 +74,26 @@ describe "Sibling Tags" do
     it "should render its contents for each sibling following the current one in order" do
       page(:dopey).should render('<r:siblings:each_before><r:title /> </r:siblings:each_before>').as('Grumpy Happy Sneezy ')
     end
+    it "should use 'order' and 'by' as set in siblings tag" do
+      page(:dopey).should render('<r:siblings order="desc"><r:each_before><r:title /> </r:each_before></r:siblings>').as('Doc Bashful ')
+      page(:dopey).should render('<r:siblings order="desc" by="title"><r:each_before><r:title /> </r:each_before></r:siblings>').as('Grumpy Happy Sneezy ')
+    end
+    it "should use 'order' and 'by' as set in each_before tag" do
+      page(:dopey).should render('<r:siblings:each_before order="desc"><r:title /> </r:siblings:each_before>').as('Doc Bashful ')
+      page(:dopey).should render('<r:siblings:each_before order="desc" by="title"><r:title /> </r:siblings:each_before>').as('Grumpy Happy Sneezy ')
+    end
   end
   
   describe "<r:siblings:each_after>" do
     it "should render its contents for each sibling following the current one in order" do
       page(:dopey).should render('<r:siblings:each_after><r:title /> </r:siblings:each_after>').as('Doc Bashful ')
+    end
+    it "should use 'order' and 'by' as set in siblings tag" do
+      page(:dopey).should render('<r:siblings order="desc"><r:each_after><r:title /> </r:each_after></r:siblings>').as('Grumpy Happy Sneezy ')
+      page(:dopey).should render('<r:siblings order="desc" by="title"><r:each_after><r:title /> </r:each_after></r:siblings>').as('Doc Bashful ')
+    end
+    it "should use 'order' and 'by' as set in each_after tag" do
+      page(:dopey).should render('<r:siblings:each_after order="desc" by="title"><r:title /> </r:siblings:each_after>').as('Doc Bashful ')
     end
   end
   

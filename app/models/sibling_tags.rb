@@ -185,7 +185,7 @@ module SiblingTags
     def adjacent_siblings_find_options(tag)
       options = siblings_find_options(tag)
       adjacent_condition = attr_or_error(tag, :attribute_name => 'adjacent', :default => 'next', :values => 'next, previous')
-      attribute_sort = (tag.attr[:by] || 'published_at').strip
+      attribute_sort = (tag.attr[:by] || tag.attr["by"] || 'published_at').strip
       attribute_order = attr_or_error(tag, :attribute_name => 'order', :default => 'asc', :values => 'desc, asc')
       
       find_less_than    = " and (#{attribute_sort} < ?)"

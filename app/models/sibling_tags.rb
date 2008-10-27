@@ -3,6 +3,21 @@ module SiblingTags
   
   desc %{
     Set's the scope for a page's siblings. 
+    
+    The order in which siblings are sorted can be manipulated using all the same attributes
+    as the @<r:children:each/>@ tag. If no attributes are supplied, the siblings will
+    have order = "published_at ASC". The @by@ attribute allows you to order by any page 
+    properties stored in the database, the most likely of these to be useful are 
+    @published_at@ and @title@.
+    
+    Values set in the @<r:siblings/>@ tag will be inherited by tags nested within, 
+    but may also be overridden in the child tags.
+      
+    *Usage:*
+    <pre><code><r:siblings [by="published_at|title"] [order="asc|desc"] [status="published|all"]/>
+      <r:next><r:link/></r:next>
+      <r:previous><r:link/></r:previous>
+    </r:siblings></code></pre>
   }
   tag 'siblings' do |tag|
     tag.locals.filter_attributes = tag.attr || {}
@@ -46,7 +61,7 @@ module SiblingTags
     desc %{
       Only render the contents of this tag if the current page has a sibling *after* it, when sorted according to the @order@ and @by@ options. 
       
-      See @<siblings:next/>@ for a more detailed description of the sorting options.
+      See @<siblings/>@ for a more detailed description of the sorting options.
     }
     tag 'siblings:if_next' do |tag|
       inherit_filter_attributes(tag)
@@ -56,7 +71,7 @@ module SiblingTags
     desc %{
       Only render the contents of this tag if the current page has a sibling *before* it, when sorted according to the @order@ and @by@ options. 
       
-      See @<siblings:next/>@ for a more detailed description of the sorting options.
+      See @<siblings/>@ for a more detailed description of the sorting options.
     }
     tag 'siblings:if_previous' do |tag|
       inherit_filter_attributes(tag)
@@ -66,7 +81,7 @@ module SiblingTags
     desc %{
       Only render the contents of this tag if the current page is the last of its siblings, when sorted according to the @order@ and @by@ options. 
       
-      See @<siblings:next/>@ for a more detailed description of the sorting options.
+      See @<siblings/>@ for a more detailed description of the sorting options.
     }
     tag 'siblings:unless_next' do |tag|
       inherit_filter_attributes(tag)
@@ -76,7 +91,7 @@ module SiblingTags
     desc %{
       Only render the contents of this tag if the current page is the first of its siblings, when sorted according to the @order@ and @by@ options. 
       
-      See @<siblings:next/>@ for a more detailed description of the sorting options.
+      See @<siblings/>@ for a more detailed description of the sorting options.
     }
     tag 'siblings:unless_previous' do |tag|
       inherit_filter_attributes(tag)
@@ -87,11 +102,7 @@ module SiblingTags
       All Radiant tags within a @<r:siblings:next/>@ block are interpreted in the context
       of the next sibling page. 
       
-      The order in which siblings are sorted can be manipulated using all the same attributes
-      as the @<r:children:each/>@ tag. If no attributes are supplied, the siblings will
-      have order = "published_at ASC". The @by@ attribute allows you to order by any page 
-      properties stored in the database, the most likely of these to be useful are @published_at@
-      and @title@.
+      See @<siblings/>@ for a more detailed description of the sorting options.
       
       *Usage:*
       <pre><code><r:siblings:next [by="published_at|title"] [order="asc|desc"] [status="published|all"]/>...</r:siblings:next></code></pre>
@@ -103,7 +114,7 @@ module SiblingTags
     
     desc %{
       Displays its contents for each of the following pages according to the given
-      attributes. See @<r:siblings:each>@ for details about the attributes.
+      attributes. See @<siblings>@ for details about the attributes.
     }
     tag 'siblings:each_before' do |tag|
       inherit_filter_attributes(tag)
@@ -120,7 +131,7 @@ module SiblingTags
       All Radiant tags within a @<r:siblings:previous/>@ block are interpreted in the context
       of the previous sibling page, when sorted according to the @order@ and @by@ options.
       
-      See @<siblings:next/>@ for a more detailed description of the sorting options.
+      See @<siblings/>@ for a more detailed description of the sorting options.
       
       *Usage:*
       <pre><code><r:siblings:previous [by="published_at|title"] [order="asc|desc"] 
@@ -133,7 +144,7 @@ module SiblingTags
     
     desc %{
       Displays its contents for each of the following pages according to the given
-      attributes. See @<r:siblings:each>@ for details about the attributes.
+      attributes. See @<siblings>@ for details about the attributes.
     }
     tag 'siblings:each_after' do |tag|
       inherit_filter_attributes(tag)

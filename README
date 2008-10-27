@@ -89,9 +89,34 @@ specified, they fall back to those values.
 
 One final example demonstrates how these sorting options may be applied:
 
-  <r:siblings>
-    <r:previous by="title">Previous in alphabet:<r:link/></r:previous>
-    <r:unless_previous by="title">This is the start of the alphabet.</r:unless_previous>
-    <r:next by="title">Next in alphabet: <r:link/></r:next>
-    <r:unless_next by="title">This is the end of the alphabet.</r:unless_next>
+  <r:siblings by="title">
+    <r:previous>Previous in alphabet:<r:link/></r:previous>
+    <r:unless_previous>This is the start of the alphabet.</r:unless_previous>
+    <r:next>Next in alphabet: <r:link/></r:next>
+    <r:unless_next>This is the end of the alphabet.</r:unless_next>
   </r:siblings>
+
+== A note on specifying conditions
+
+You can specify <tt>order</tt> and <tt>by</tt> attributes inside of the <tt><r:siblings/></tt> tag itself, and these conditions are inherited by the child tags. The following examples are equivalent:
+  
+  <r:siblings>
+    <r:previous by="title"><r:link/></r:previous>
+    <r:next by="title"><r:link/></r:next>
+  </r:siblings>
+  
+  <r:siblings by="title">
+    <r:previous><r:link/></r:previous>
+    <r:next><r:link/></r:next>
+  </r:siblings>
+
+By placing the <tt>by</tt> attribute in the <tt><r:siblings/></tt> tag, we can save on repetition. However, it is not necessary to use the <tt><r:siblings/></tt> tag to next its descendant tags, and the exact same effect could be achieved using the following:
+
+  <r:siblings:previous by="title"><r:link/></r:siblings:previous>
+  <r:siblings:next by="title"><r:link/></r:siblings:next>
+
+
+
+= Credits
+
+Jim Gay created the siblings:each, each_before and each_after tags.

@@ -18,11 +18,10 @@ end
 require 'rake'
 require 'rake/rdoctask'
 require 'rake/testtask'
-
+ 
 rspec_base = File.expand_path(RADIANT_ROOT + '/vendor/plugins/rspec/lib')
 $LOAD_PATH.unshift(rspec_base) if File.exist?(rspec_base)
 require 'spec/rake/spectask'
-# require 'spec/translator'
 
 # Cleanup the RADIANT_ROOT constant so specs will load the environment
 Object.send(:remove_const, :RADIANT_ROOT)
@@ -52,7 +51,7 @@ namespace :spec do
     t.spec_opts = ["--format", "specdoc", "--dry-run"]
     t.spec_files = FileList['spec/**/*_spec.rb']
   end
-
+  
   [:models, :controllers, :views, :helpers].each do |sub|
     desc "Run the specs under spec/#{sub}"
     Spec::Rake::SpecTask.new(sub) do |t|
@@ -60,7 +59,7 @@ namespace :spec do
       t.spec_files = FileList["spec/#{sub}/**/*_spec.rb"]
     end
   end
-
+  
   # Setup specs for stats
   task :statsetup do
     require 'code_statistics'
@@ -74,7 +73,7 @@ namespace :spec do
     ::CodeStatistics::TEST_TYPES << "Helper specs"
     ::STATS_DIRECTORIES.delete_if {|a| a[0] =~ /test/}
   end
-
+  
   namespace :db do
     namespace :fixtures do
       desc "Load fixtures (from spec/fixtures) into the current environment's database.  Load specific fixtures using FIXTURES=x,y"

@@ -15,6 +15,10 @@ describe "AuthorTags" do
     it "should render its contents when used as a double tag" do
       page.should render('<r:author>true</r:author>').as('true')
     end
+    
+    it "should set the author to that with the given login" do
+      page.should render('<r:author login="admin" />').as('Admin')
+    end
   end
   
   describe "<r:author:name>" do

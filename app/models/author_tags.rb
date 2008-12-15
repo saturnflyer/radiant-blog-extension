@@ -3,7 +3,7 @@ module AuthorTags
   include Radiant::Taggable
   class TagError < StandardError; end
   
-    desc %{
+  desc %{
     Renders the name of the author of the current page when used as a 
     single tag, but will set the scope to the current author when used
     as a double tag.
@@ -13,6 +13,8 @@ module AuthorTags
     <pre><code><r:author>text</r:author></code></pre>
   }
   tag 'author' do |tag|
+    login = tag.attr['login']
+    tag.locals.author = User.find_by_login(login) if login
     if tag.locals.author
       tag.double? ? tag.expand : tag.locals.author.name
     else
@@ -108,31 +110,6 @@ module AuthorTags
     end
     result
   end
-  
-  # [:name, :email].each do |method|
-  #   desc %{
-  #     Renders the #{method} of the current author. This may be
-  #     used within @<r:authors:each>@ or @<r:author></r:author>@
-  #   }
-  #   tag "authors:each:#{method}" do |tag|
-  #     tag.locals.author.send(method)
-  #   end
-  # end
-  # 
-  # desc %{
-  #   Renders the bio of the current author with the selected filter.
-  #   This may be used within @<r:authors:each>@ or @<r:author></r:author>@
-  # }
-  # tag "authors:each:bio" do |tag|
-  #   author = tag.locals.author
-  #   text = author.bio
-  #   unless author.bio_filter_id.blank?
-  #     text_filter = (author.bio_filter_id + "Filter").constantize.new
-  #     text_filter.filter(text)
-  #   else
-  #     text
-  #   end
-  # end
   
   desc %{
     Sets the scope for the current author's pages.

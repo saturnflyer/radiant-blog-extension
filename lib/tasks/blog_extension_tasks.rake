@@ -9,9 +9,9 @@ namespace :radiant do
       task :migrate => :environment do
         require 'radiant/extension_migrator'
         if ENV["VERSION"]
-          AuthorExtension.migrator.migrate(ENV["VERSION"].to_i)
+          BlogExtension.migrator.migrate(ENV["VERSION"].to_i)
         else
-          AuthorExtension.migrator.migrate
+          BlogExtension.migrator.migrate
         end
       end
       

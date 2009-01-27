@@ -154,6 +154,8 @@ module AuthorTags
     if url
       found = Page.find_by_url(absolute_path_for(tag.locals.page.url, url))
       if page_found?(found)
+        options[:conditions].first << ' and created_by_id = ?'
+        options[:conditions] << tag.locals.author.id
         found.children.find(:all, options).each do |p|
           tag.locals.page = p
           result << tag.expand

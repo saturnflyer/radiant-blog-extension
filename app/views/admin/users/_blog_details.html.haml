@@ -1,3 +1,11 @@
+- if admin.respond_to?(:dashboard) && (admin? || @config['blog.location.configurable?'])
+  %tr
+    %th.label
+      %label.optional{:for => 'blog_location'} Blog Location
+    %td.field
+      ~ text_field :user, :blog_location, :class => 'textbox'
+    %td.help
+      Optional. Location where you'll add a new page from the Dashboard. Example: /blog
 %tr
   %th.label
     %label.optional{:for=>"bio"} Bio

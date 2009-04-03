@@ -10,7 +10,7 @@ module Admin::BlogHelper
   end
   
   def valid_user_blog_location?(location)
-    !user_blog_page(location).blank?
+    !location.blank? && !user_blog_page(location).blank?
   end
   
   def user_blog_page(location = current_user.blog_location)

@@ -21,7 +21,8 @@ class BlogExtension < Radiant::Extension
       Radiant::Config['blog.location.default'] = '' unless not Radiant::Config['blog.location.default'].blank?
       admin.user.edit.add :form, 'blog_details', :after => 'edit_notes'
       if admin.respond_to?(:dashboard)
-        admin.dashboard.index.add :current_user_draft_pages_bottom, 'new_page_link'
+        admin.dashboard.index.add :current_user_draft_pages_top, 'new_page_link'
+        admin.dashboard.index.add :current_user_published_pages_top, 'new_page_link'
         Admin::DashboardController.class_eval{
           helper Admin::BlogHelper
         }

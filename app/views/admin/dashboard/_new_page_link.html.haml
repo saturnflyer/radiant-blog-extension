@@ -1,1 +1,2 @@
-%p= link_to "Create a new post", new_blog_post_url
+- unless new_blog_post_url.blank?
+  %p= link_to "Create a new post", new_blog_post_url, :class => :addition

@@ -1,4 +1,4 @@
-class SiblingPagesScenario < Scenario::Base
+class SiblingPagesDataset < Dataset::Base
   uses :home_page
   
   def load

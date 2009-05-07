@@ -14,6 +14,7 @@ module Admin::BlogHelper
   end
   
   def user_blog_page(location = current_user.blog_location)
-    Page.find_by_url(location)
+    page = Page.find_by_url(location)
+    return page.kind_of?(FileNotFoundPage) ? nil : page
   end
 end

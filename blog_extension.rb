@@ -31,7 +31,6 @@ class BlogExtension < Radiant::Extension
   end
   
   def deactivate
-    # admin.tabs.remove "Author"
   end
   
 end

@@ -5,7 +5,7 @@ describe Admin::BlogHelper do
   before do
     login_as :admin
     @admin = users(:admin)
-    @admin.stub!(:blog_location).and_return('/')
+    @admin.stub!(:blog_location).and_return('/parent')
     helper.stub!(:current_user).and_return(@admin)
   end
   describe "valid_user_blog_location?(location)" do
@@ -40,11 +40,13 @@ describe Admin::BlogHelper do
   end
   describe "user_blog_page" do
     it "should find the page set in current user's blog_location" do
-      helper.user_blog_page().should == pages(:home)
+      helper.user_blog_page().should == pages(:parent)
     end
     it "should find the page with the given URL" do
-      Page.should_receive(:find_by_url).with('/').and_return(pages(:home))
       helper.user_blog_page('/').should == pages(:home)
+    end
+    it "should return nil if the page of the given url is a FileNotFoundPage" do
+      helper.user_blog_page('/file-not-found').should be_nil
     end
   end
 end

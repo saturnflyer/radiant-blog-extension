@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
 describe "AuthorTags" do
-  scenario :users_and_pages
+  dataset :users_and_pages
   
   describe "<r:author>" do
     it "should render the author of the current page" do

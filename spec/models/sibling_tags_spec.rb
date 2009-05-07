@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
 describe "Sibling Tags" do
-  scenario :sibling_pages
+  dataset :sibling_pages
   
   describe "<r:siblings>" do
     it "should expand its contents" do

@@ -1,10 +1,13 @@
 = Blog
 
 The Blog extension has been built to provide support for commonly used features of 
-web logs. It is a conglomeration of multiple extensions and new features.
+web logs.
 
-Some features from:
+Some features were pulled from and added to the Siblings Tags extension:
 git://github.com/nelstrom/radiant-sibling-tags-extension.git
 
 Built by Saturn Flyer http://www.saturnflyer.com and many others
 Supported by Ignite Social Media http://www.ignitesocialmedia.com
+
+TODO:
+  - create an AuthorIndexPage and an AuthorPage to easily list authors and their related details

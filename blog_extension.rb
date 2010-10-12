@@ -23,6 +23,7 @@ class BlogExtension < Radiant::Extension
       if admin.respond_to?(:dashboard)
         admin.dashboard.index.add :current_user_draft_pages_top, 'new_page_link'
         admin.dashboard.index.add :current_user_published_pages_top, 'new_page_link'
+        admin.dashboard.index.add :user_action_list, 'new_post_link'
         Admin::DashboardController.class_eval{
           helper Admin::BlogHelper
         }

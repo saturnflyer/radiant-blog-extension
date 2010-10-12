@@ -9,6 +9,16 @@ module Admin::BlogHelper
     result
   end
   
+  def new_blog_post_path
+    result = ''
+    if valid_user_blog_location?(current_user.blog_location)
+        result = new_admin_page_child_path(user_blog_page)
+    elsif valid_user_blog_location?(@config['blog.location.default'])
+        result = new_admin_page_child_path(user_blog_page(@config['blog.location.default']))
+    end
+    result
+  end
+  
   def valid_user_blog_location?(location)
     !location.blank? && !user_blog_page(location).blank?
   end

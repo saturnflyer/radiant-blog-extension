@@ -1,0 +1,10 @@
+en:
+  blog_extension:
+    blog: "Blog"
+    blog_configuration: "Blog configuration"
+    new_blog_entry: "new blog entry"
+  config:
+    blog:
+      location:
+        configurable?: "Per user blog root?"
+        default: "Default blog root"

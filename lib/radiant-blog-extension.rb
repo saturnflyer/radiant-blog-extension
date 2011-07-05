@@ -1,4 +1,4 @@
-module RadiantTaggableExtension
+module RadiantBlogExtension
   VERSION = '1.1'
   SUMMARY = %q{Blogging extension for Radiant CMS}
   DESCRIPTION = %q{Provides tags and features for blogging.}

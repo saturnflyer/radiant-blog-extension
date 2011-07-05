@@ -1,10 +1,11 @@
 # Uncomment this if you reference any of your controllers in activate
 # require_dependency 'application'
+require "radiant-blog-extension"
 
 class BlogExtension < Radiant::Extension
-  version "1.0"
-  description "Provides features for blogging."
-  url "http://saturnflyer.com/"
+  version RadiantTaggableExtension::VERSION
+  description RadiantTaggableExtension::DESCRIPTION
+  url RadiantTaggableExtension::URL
   
   def activate
     if Page.table_exists? #allow bootstrapping

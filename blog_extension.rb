@@ -17,16 +17,6 @@ class BlogExtension < Radiant::Extension
       admin.user.edit.add :form, 'blog_details', :after => 'edit_notes'
       admin.configuration.show.add :config, 'admin/configuration/blog', :after => 'defaults'
       admin.configuration.edit.add :form,   'admin/configuration/edit_blog', :after => 'edit_defaults'
-
-      if admin.respond_to?(:dashboard)
-        Admin::DashboardController.send :helper, Admin::BlogHelper
-
-        # some of these will not be in use, depending on which dashboard you've got, but it shouldn't matter.
-        admin.dashboard.index.add :shortcuts, 'new_blog_entry'
-        admin.dashboard.index.add :current_user_draft_pages_top, 'new_page_link'
-        admin.dashboard.index.add :current_user_published_pages_top, 'new_page_link'
-        admin.dashboard.index.add :user_action_list, 'new_post_link'
-      end
     end
   end
   

@@ -3,9 +3,9 @@
 require "radiant-blog-extension"
 
 class BlogExtension < Radiant::Extension
-  version RadiantTaggableExtension::VERSION
-  description RadiantTaggableExtension::DESCRIPTION
-  url RadiantTaggableExtension::URL
+  version RadiantBlogExtension::VERSION
+  description RadiantBlogExtension::DESCRIPTION
+  url RadiantBlogExtension::URL
   
   def activate
     if Page.table_exists? #allow bootstrapping

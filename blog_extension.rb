@@ -1,15 +1,12 @@
 # Uncomment this if you reference any of your controllers in activate
-# require_dependency 'application'
+# require_dependency "application_controller"
+require "radiant-blog-extension"
 
 class BlogExtension < Radiant::Extension
-  version "1.0"
-  description "Provides features for blogging."
-  url "http://saturnflyer.com/"
-  
-  # define_routes do |map|
-  #   map.connect 'admin/author/:action', :controller => 'admin/author'
-  # end
-  
+  version     RadiantBlogExtension::VERSION
+  description RadiantBlogExtension::DESCRIPTION
+  url         RadiantBlogExtension::URL
+
   def activate
     if Page.table_exists? #allow bootstrapping
       Page.send :include, AuthorTags
@@ -30,8 +27,4 @@ class BlogExtension < Radiant::Extension
       end
     end
   end
-  
-  def deactivate
-  end
-  
 end

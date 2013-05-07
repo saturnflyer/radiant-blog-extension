@@ -1,7 +1,3 @@
-# In rails 1.2, plugins aren't available in the path until they're loaded.
-# Check to see if the rspec plugin is installed first and require
-# it if it is.  If not, use the gem version.
-
 # Determine where the RSpec plugin is by loading the boot
 unless defined? RADIANT_ROOT
   ENV["RAILS_ENV"] = "test"
@@ -16,19 +12,21 @@ unless defined? RADIANT_ROOT
 end
 
 require 'rake'
-require 'rake/rdoctask'
+require 'rdoc/task'
 require 'rake/testtask'
- 
+
 rspec_base = File.expand_path(RADIANT_ROOT + '/vendor/plugins/rspec/lib')
 $LOAD_PATH.unshift(rspec_base) if File.exist?(rspec_base)
 require 'spec/rake/spectask'
+require 'cucumber'
+require 'cucumber/rake/task'
 
 # Cleanup the RADIANT_ROOT constant so specs will load the environment
 Object.send(:remove_const, :RADIANT_ROOT)
 
 extension_root = File.expand_path(File.dirname(__FILE__))
 
-task :default => :spec
+task :default => [:spec, :features]
 task :stats => "spec:statsetup"
 
 desc "Run all specs in spec directory"
@@ -36,6 +34,8 @@ Spec::Rake::SpecTask.new(:spec) do |t|
   t.spec_opts = ['--options', "\"#{extension_root}/spec/spec.opts\""]
   t.spec_files = FileList['spec/**/*_spec.rb']
 end
+
+task :features => 'spec:integration'
 
 namespace :spec do
   desc "Run all specs in spec directory with RCov"
@@ -51,7 +51,7 @@ namespace :spec do
     t.spec_opts = ["--format", "specdoc", "--dry-run"]
     t.spec_files = FileList['spec/**/*_spec.rb']
   end
-  
+
   [:models, :controllers, :views, :helpers].each do |sub|
     desc "Run the specs under spec/#{sub}"
     Spec::Rake::SpecTask.new(sub) do |t|
@@ -60,6 +60,14 @@ namespace :spec do
     end
   end
   
+  desc "Run the Cucumber features"
+  Cucumber::Rake::Task.new(:integration) do |t|
+    t.fork = true
+    t.cucumber_opts = ['--format', (ENV['CUCUMBER_FORMAT'] || 'pretty')]
+    # t.feature_pattern = "#{extension_root}/features/**/*.feature"
+    t.profile = "default"
+  end
+
   # Setup specs for stats
   task :statsetup do
     require 'code_statistics'
@@ -73,7 +81,7 @@ namespace :spec do
     ::CodeStatistics::TEST_TYPES << "Helper specs"
     ::STATS_DIRECTORIES.delete_if {|a| a[0] =~ /test/}
   end
-  
+
   namespace :db do
     namespace :fixtures do
       desc "Load fixtures (from spec/fixtures) into the current environment's database.  Load specific fixtures using FIXTURES=x,y"
@@ -89,20 +97,12 @@ namespace :spec do
 end
 
 desc 'Generate documentation for the blog extension.'
-Rake::RDocTask.new(:rdoc) do |rdoc|
+RDoc::Task.new(:rdoc) do |rdoc|
   rdoc.rdoc_dir = 'rdoc'
   rdoc.title    = 'BlogExtension'
   rdoc.options << '--line-numbers' << '--inline-source'
   rdoc.rdoc_files.include('README')
   rdoc.rdoc_files.include('lib/**/*.rb')
-end
-
-# For extensions that are in transition
-desc 'Test the blog extension.'
-Rake::TestTask.new(:test) do |t|
-  t.libs << 'lib'
-  t.pattern = 'test/**/*_test.rb'
-  t.verbose = true
 end
 
 # Load any custom rakefiles for extension
